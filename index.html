@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Já Fui — Comunidade acolhedora de emagrecimento</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --brand-1:#e6f3ff;  /* azul claro pastel */
+      --brand-2:#e8fbf2;  /* verde muito suave */
+      --brand-3:#fff2e6;  /* laranja pastel */
+      --accent:#57c4a0;   /* verde médio amigável */
+      --accent-2:#5aa6ff; /* azul médio suave */
+      --ink:#0f172a;
+    }
+    html,body{height:100%}
+    body{font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";}
+    /* Bolhas de fundo suaves */
+    .bg-bubbles::before,
+    .bg-bubbles::after{
+      content:"";
+      position:absolute;
+      inset:-10% -20% auto auto;
+      width:40rem; height:40rem;
+      background: radial-gradient(closest-side, rgba(90,166,255,.18), transparent 70%);
+      filter: blur(8px);
+      border-radius:999px;
+      z-index:0;
+      transform: translate(15%, -10%);
+    }
+    .bg-bubbles::after{
+      inset:auto auto -20% -10%;
+      width:45rem; height:45rem;
+      background: radial-gradient(closest-side, rgba(87,196,160,.18), transparent 70%);
+      transform: translate(-10%, 10%);
+    }
+    /* Animações sutis */
+    .float-slow{ animation: float 8s ease-in-out infinite; }
+    @keyframes float{
+      0%,100%{ transform: translateY(0) }
+      50%{ transform: translateY(-6px) }
+    }
+    .fade-in{ animation: fade .5s ease; }
+    @keyframes fade{ from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+    /* Carrossel */
+    .carousel-track{ transition: transform .6s cubic-bezier(.22,1,.36,1); }
+    /* Oculta scroll das listas horizontais quando necessário */
+    .no-scrollbar::-webkit-scrollbar{ display:none }
+    .no-scrollbar{ -ms-overflow-style:none; scrollbar-width:none }
+  </style>
+</head>
+<body class="min-h-full bg-gradient-to-br from-[var(--brand-1)] via-white to-[var(--brand-2)] text-[var(--ink)] antialiased">
+  <div id="app" class="relative">
+    <!-- Header / Nav superior -->
+    <header class="sticky top-0 z-30 bg-white/60 backdrop-blur border-b border-slate-100">
+      <div class="max-w-screen-md mx-auto px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <!-- Logotipo em SVG (coração + check) -->
+          <svg class="w-8 h-8 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 21s-7-4.35-9.5-8A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 7c-2.5 3.65-9.5 8-9.5 8Z" stroke="currentColor" stroke-width="1.5" fill="currentColor" fill-opacity=".15"/>
+            <path d="m9.5 12 2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="font-extrabold tracking-tight text-xl">Já Fui</span>
+        </div>
+        <nav class="hidden sm:flex gap-2">
+          <button data-goto="landing" class="px-3 py-1.5 rounded-lg hover:bg-slate-100 transition">Início</button>
+          <button data-goto="feed" class="px-3 py-1.5 rounded-lg hover:bg-slate-100 transition">Comunidade</button>
+          <button data-goto="chat" class="px-3 py-1.5 rounded-lg hover:bg-slate-100 transition">Chat</button>
+          <button data-goto="progress" class="px-3 py-1.5 rounded-lg hover:bg-slate-100 transition">Progresso</button>
+          <button data-goto="plans" class="px-3 py-1.5 rounded-lg hover:bg-slate-100 transition">Assinatura</button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Conteúdo -->
+    <main class="relative max-w-screen-md mx-auto px-4">
+      <!-- LANDING -->
+      <section id="view-landing" class="py-8 sm:py-12 relative bg-bubbles">
+        <div class="relative z-10">
+          <div class="text-center sm:text-left sm:flex items-center gap-6">
+            <div class="flex-1">
+              <p class="inline-flex items-center gap-2 text-sm font-semibold text-[var(--accent-2)] tracking-wide uppercase">
+                Comunidade segura e acolhedora
+                <span class="inline-block w-2 h-2 rounded-full bg-[var(--accent-2)]"></span>
+              </p>
+              <h1 class="mt-2 text-3xl sm:text-4xl font-extrabold leading-tight">
+                Você não está sozinho nessa jornada.
+              </h1>
+              <p class="mt-3 text-slate-700">
+                Conecte-se com pessoas que “já foram” e hoje inspiram com histórias reais de superação. Acolhimento, motivação e apoio — tudo em um só lugar.
+              </p>
+              <div class="mt-5 flex flex-col sm:flex-row gap-3">
+                <button id="btnEntrarDemo" class="px-5 py-3 rounded-xl text-white bg-[var(--accent)] hover:brightness-110 active:brightness-95 transition shadow-sm">
+                  Entrar no Demo
+                </button>
+                <button id="btnCriarDemo" class="px-5 py-3 rounded-xl text-[var(--accent)] bg-[var(--brand-2)] hover:bg-emerald-50 active:bg-emerald-100 transition">
+                  Criar conta (Demo)
+                </button>
+              </div>
+              <p class="mt-2 text-xs text-slate-500">Este é um ambiente de demonstração sem coleta de dados pessoais.</p>
+            </div>
+            <!-- Ilustração amigável -->
+            <div class="mt-8 sm:mt-0 flex-1 flex justify-center">
+              <svg class="w-64 h-64 float-slow" viewBox="0 0 300 300" fill="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#5aa6ff" stop-opacity=".25"/>
+                    <stop offset="1" stop-color="#57c4a0" stop-opacity=".25"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="150" cy="150" r="115" fill="url(#g1)" />
+                <!-- Dois perfis de mãos dadas (estilizado) -->
+                <g stroke="#57c4a0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M110 140c12-18 34-18 46 0"/>
+                  <path d="M144 155c5 10 22 12 32 3 10-9 12-25 4-36"/>
+                  <path d="M156 170c6 10 26 12 36 2 10-10 10-26 0-36"/>
+                  <path d="M120 160c-8 10-24 12-34 4-11-8-13-24-6-35"/>
+                  <path d="M126 175c-9 10-26 10-36 0-10-10-10-26 0-36"/>
+                  <!-- mãos -->
+                  <path d="M140 180c6 8 20 8 26 0" />
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <!-- Benefícios -->
+          <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="rounded-2xl bg-white/70 backdrop-blur p-4 border border-slate-100 hover:shadow transition">
+              <div class="w-9 h-9 rounded-full bg-[var(--brand-2)] flex items-center justify-center mb-2">
+                <svg class="w-5 h-5 text-[var(--accent)]" viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <p class="font-semibold">Apoio real</p>
+            </div>
+            <div class="rounded-2xl bg-white/70 backdrop-blur p-4 border border-slate-100 hover:shadow transition">
+              <div class="w-9 h-9 rounded-full bg-[var(--brand-1)] flex items-center justify-center mb-2">
+                <svg class="w-5 h-5 text-[var(--accent-2)]" viewBox="0 0 24 24" fill="none"><path d="M12 20s7-4 7-11a7 7 0 1 0-14 0c0 7 7 11 7 11Z" stroke="currentColor" stroke-width="2"/></svg>
+              </div>
+              <p class="font-semibold">Histórias de superação</p>
+            </div>
+            <div class="rounded-2xl bg-white/70 backdrop-blur p-4 border border-slate-100 hover:shadow transition">
+              <div class="w-9 h-9 rounded-full bg-[var(--brand-3)] flex items-center justify-center mb-2">
+                <svg class="w-5 h-5 text-orange-400" viewBox="0 0 24 24" fill="none"><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <p class="font-semibold">Motivação constante</p>
+            </div>
+            <div class="rounded-2xl bg-white/70 backdrop-blur p-4 border border-slate-100 hover:shadow transition">
+              <div class="w-9 h-9 rounded-full bg-white flex items-center justify-center mb-2">
+                <svg class="w-5 h-5 text-emerald-500" viewBox="0 0 24 24" fill="none"><path d="M4 10a6 6 0 0 1 10-4 6 6 0 1 1 0 12H8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </div>
+              <p class="font-semibold">Comunidade segura</p>
+            </div>
+          </div>
+
+          <!-- Carrossel de depoimentos -->
+          <div class="mt-8 rounded-2xl bg-white shadow-sm border border-slate-100 overflow-hidden">
+            <div class="px-5 pt-5">
+              <h3 class="font-bold">Depoimentos</h3>
+              <p class="text-sm text-slate-600">Motivações curtas de quem já passou por isso</p>
+            </div>
+            <div class="relative overflow-hidden">
+              <div id="carouselTrack" class="carousel-track flex transition-all">
+                <!-- Slide 1 -->
+                <div class="min-w-full p-5 flex items-center gap-4">
+                  <div class="w-10 h-10 rounded-full bg-[var(--brand-2)] flex items-center justify-center font-bold text-[var(--accent)]">LA</div>
+                  <div>
+                    <p class="font-semibold">Larissa, -18kg</p>
+                    <p class="text-slate-600">“Ter alguém pra conversar fez toda a diferença.”</p>
+                  </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="min-w-full p-5 flex items-center gap-4">
+                  <div class="w-10 h-10 rounded-full bg-[var(--brand-1)] flex items-center justify-center font-bold text-[var(--accent-2)]">VI</div>
+                  <div>
+                    <p class="font-semibold">Vitor, -25kg</p>
+                    <p class="text-slate-600">“Sem julgamentos. Só acolhimento e um passo por vez.”</p>
+                  </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="min-w-full p-5 flex items-center gap-4">
+                  <div class="w-10 h-10 rounded-full bg-[var(--brand-3)] flex items-center justify-center font-bold text-orange-500">MA</div>
+                  <div>
+                    <p class="font-semibold">Marina, -12kg</p>
+                    <p class="text-slate-600">“Voltei a acreditar em mim.”</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="px-5 pb-5 flex items-center justify-between">
+              <div class="flex gap-1">
+                <span class="dot w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span class="dot w-2 h-2 rounded-full bg-slate-300"></span>
+                <span class="dot w-2 h-2 rounded-full bg-slate-300"></span>
+              </div>
+              <div class="text-xs text-slate-500">Troca automática a cada 4s</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEED -->
+      <section id="view-feed" class="hidden py-6">
+        <!-- Ações do topo -->
+        <div class="mb-4 flex items-center justify-between">
+          <h2 class="text-xl font-bold">Comunidade</h2>
+          <div class="flex gap-2">
+            <button id="btnNovaHistoria" class="px-3 py-2 rounded-xl bg-[var(--brand-2)] text-[var(--accent)] hover:bg-emerald-50 transition">Compartilhar (Demo)</button>
+            <button data-goto="chat" class="px-3 py-2 rounded-xl bg-[var(--accent)] text-white hover:brightness-110 transition">Abrir Chat</button>
+          </div>
+        </div>
+
+        <div id="feedList" class="space-y-4">
+          <!-- Card 1 -->
+          <article class="rounded-2xl bg-white border border-slate-100 shadow-sm overflow-hidden">
+            <div class="p-4 flex items-start gap-3">
+              <div class="w-12 h-12 rounded-full bg-[var(--brand-2)] flex items-center justify-center font-bold text-[var(--accent)]">CA</div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="font-semibold">Carla Andrade</p>
+                    <p class="text-xs text-slate-500">“Um dia de cada vez.”</p>
+                  </div>
+                  <span class="text-xs text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">Ex-obesa</span>
+                </div>
+                <p class="mt-3 text-slate-700">Eliminei 22kg em 18 meses. Tive recaídas, mas aprendi a ser gentil comigo. Se você precisa conversar, estou por aqui 💚</p>
+                <div class="mt-4 flex items-center gap-3">
+                  <button class="btn-like px-3 py-1.5 rounded-full bg-[var(--brand-2)] text-[var(--accent)] hover:bg-emerald-50 transition" data-id="1">Curtir <span class="like-count">23</span></button>
+                  <button class="btn-comment px-3 py-1.5 rounded-full bg-[var(--brand-1)] text-[var(--accent-2)] hover:bg-blue-50 transition" data-id="1">Comentar</button>
+                </div>
+                <div class="comment-box hidden mt-3">
+                  <div class="flex gap-2">
+                    <input type="text" placeholder="Deixe uma mensagem de apoio..." class="flex-1 px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-200">
+                    <button class="btn-send-comment px-3 py-2 rounded-xl bg-[var(--accent)] text-white hover:brightness-110 transition" data-id="1">Enviar</button>
+                  </div>
+                  <ul class="mt-2 space-y-2 text-sm"></ul>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="rounded-2xl bg-white border border-slate-100 shadow-sm overflow-hidden">
+            <div class="p-4 flex items-start gap-3">
+              <div class="w-12 h-12 rounded-full bg-[var(--brand-1)] flex items-center justify-center font-bold text-[var(--accent-2)]">RO</div>
+              <div class="flex-1">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="font-semibold">Roberto Oliveira</p>
+                    <p class="text-xs text-slate-500">“Você é maior que um número.”</p>
+                  </div>
+                  <span class="text-xs text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">Ex-obeso</span>
+                </div>
+                <p class="mt-3 text-slate-700">Aprendi a gostar de caminhar ouvindo música. Comece com 5 minutos. E se cansar, tudo bem. A gente recomeça junto ✨</p>
+                <div class="mt-4 flex items-center gap-3">
+                  <button class="btn-like px-3 py-1.5 rounded-full bg-[var(--brand-2)] text-[var(--accent)] hover:bg-emerald-50 transition" data-id="2">Curtir <span class="like-count">12</span></button>
+                  <button class="btn-comment px-3 py-1.5 rounded-full bg-[var(--brand-1)] text-[var(--accent-2)] hover:bg-blue-50 transition" data-id="2">Comentar</button>
+                </div>
+                <div class="comment-box hidden mt-3">
+                  <div class="flex gap-2">
+                    <input type="text" placeholder="Deixe uma mensagem de apoio..." class="flex-1 px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-200">
+                    <button class="btn-send-comment px-3 py-2 rounded-xl bg-[var(--accent)] text-white hover:brightness-110 transition" data-id="2">Enviar</button>
+                  </div>
+                  <ul class="mt-2 space-y-2 text-sm"></ul>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- CHAT -->
+      <section id="view-chat" class="hidden py-6">
+        <div class="mb-4">
+          <h2 class="text-xl font-bold">Chat de Apoio</h2>
+          <p class="text-sm text-slate-600">Conversa privada e acolhedora (Demo)</p>
+        </div>
+
+        <!-- Cabeçalho da conversa -->
+        <div class="rounded-2xl bg-white border border-slate-100 shadow-sm overflow-hidden">
+          <div class="p-4 flex items-center gap-3 border-b border-slate-100">
+            <div class="w-10 h-10 rounded-full bg-[var(--brand-2)] flex items-center justify-center font-bold text-[var(--accent)]">CA</div>
+            <div class="flex-1">
+              <p class="font-semibold leading-tight">Carla (Mentora)</p>
+              <p class="text-xs text-slate-500">Online agora • Responde em minutos</p>
+            </div>
+            <span class="text-xs text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">Seguro</span>
+          </div>
+
+          <!-- Mensagens -->
+          <div id="chatArea" class="p-4 space-y-3 max-h-[50vh] overflow-auto no-scrollbar bg-gradient-to-b from-white to-[var(--brand-2)]">
+            <div class="flex items-start gap-2">
+              <div class="w-7 h-7 rounded-full bg-[var(--brand-2)] flex items-center justify-center text-[var(--accent)] text-xs font-bold">CA</div>
+              <div class="bg-white border border-slate-100 rounded-2xl px-4 py-2 shadow-sm max-w-[75%]">
+                <p class="text-sm">Oi! Seja bem-vindo(a) 💚 Como você quer começar? Sem pressa, tô aqui pra te ouvir.</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-2 justify-end">
+              <div class="bg-[var(--brand-1)] text-slate-800 rounded-2xl px-4 py-2 shadow-sm max-w-[75%]">
+                <p class="text-sm">Quero retomar hábitos, mas fico desanimado(a).</p>
+              </div>
+              <div class="w-7 h-7 rounded-full bg-[var(--brand-1)] flex items-center justify-center text-[var(--accent-2)] text-xs font-bold">EU</div>
+            </div>
+          </div>
+
+          <!-- Sugestões rápidas -->
+          <div class="px-4 pt-2 flex gap-2 flex-wrap bg-white">
+            <button class="chip px-3 py-1.5 rounded-full bg-[var(--brand-2)] text-[var(--accent)] hover:bg-emerald-50 transition">Preciso de motivação</button>
+            <button class="chip px-3 py-1.5 rounded-full bg-[var(--brand-1)] text-[var(--accent-2)] hover:bg-blue-50 transition">Como lidar com recaídas?</button>
+            <button class="chip px-3 py-1.5 rounded-full bg-[var(--brand-3)] text-orange-500 hover:bg-orange-50 transition">Ideias de mini metas</button>
+          </div>
+
+          <!-- Campo de envio -->
+          <div class="p-3 flex items-center gap-2 border-t border-slate-100 bg-white">
+            <input id="chatInput" type="text" placeholder="Escreva uma mensagem acolhedora..." class="flex-1 px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-200">
+            <button id="btnSendChat" class="px-4 py-3 rounded-xl bg-[var(--accent)] text-white hover:brightness-110 active:brightness-95 transition">Enviar</button>
+          </div>
+        </div>
+        <p class="mt-2 text-xs text-slate-500">Dica: mensagens enviadas aqui ficam só no seu navegador (demo).</p>
+      </section>
+
+      <!-- PROGRESSO -->
+      <section id="view-progress" class="hidden py-6">
+        <h2 class="text-xl font-bold mb-4">Seu Progresso</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Barra de progresso -->
+          <div class="rounded-2xl bg-white border border-slate-100 shadow-sm p-4">
+            <p class="font-semibold">Metas da Semana</p>
+            <div class="mt-3">
+              <div class="flex items-center justify-between text-sm">
+                <span>Caminhada leve</span>
+                <span id="progressPct" class="text-emerald-600 font-semibold">60%</span>
+              </div>
+              <div class="mt-2 h-3 rounded-full bg-slate-100 overflow-hidden">
+                <div id="progressBar" class="h-full w-[60%] bg-gradient-to-r from-emerald-400 to-emerald-500"></div>
+              </div>
+              <div class="mt-3 flex gap-2">
+                <button data-prog="-10" class="px-3 py-1.5 rounded-lg bg-[var(--brand-2)] text-[var(--accent)] hover:bg-emerald-50">-</button>
+                <button data-prog="+10" class="px-3 py-1.5 rounded-lg bg-[var(--brand-2)] text-[var(--accent)] hover:bg-emerald-50">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selos -->
+          <div class="rounded-2xl bg-white border border-slate-100 shadow-sm p-4">
+            <p class="font-semibold">Selos e Conquistas</p>
+            <div class="mt-3 flex flex-wrap gap-3">
+              <div class="px-3 py-2 rounded-xl bg-[var(--brand-2)] text-[var(--accent)] flex items-center gap-2">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="m5 13 4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                1º passo dado
+              </div>
+              <div class="px-3 py-2 rounded-xl bg-[var(--brand-1)] text-[var(--accent-2)]">3 dias em frente</div>
+              <div class="px-3 py-2 rounded-xl bg-[var(--brand-3)] text-orange-500">Meta da semana 🎯</div>
+            </div>
+          </div>
+
+          <!-- Mini metas -->
+          <div class="rounded-2xl bg-white border border-slate-100 shadow-sm p-4 sm:col-span-2">
+            <p class="font-semibold">Mini Metas</p>
+            <div id="goalsList" class="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <!-- Itens criados dinamicamente -->
+            </div>
+            <div class="mt-3 flex gap-2">
+              <input id="goalInput" type="text" placeholder="Adicionar nova mini meta..." class="flex-1 px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-200">
+              <button id="btnAddGoal" class="px-4 py-2 rounded-xl bg-[var(--accent)] text-white hover:brightness-110">Adicionar</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PLANOS -->
+      <section id="view-plans" class="hidden py-6">
+        <h2 class="text-xl font-bold">Assinatura Freemium</h2>
+        <p class="text-sm text-slate-600 mb-4">Escolha uma opção simples. Sem letras miúdas.</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Plano Free -->
+          <div class="rounded-2xl bg-white border border-slate-100 shadow-sm p-5">
+            <p class="text-sm font-semibold text-slate-500">Gratuito</p>
+            <h3 class="text-2xl font-extrabold mt-1">R$ 0<span class="text-base font-semibold text-slate-500"> /sempre</span></h3>
+            <ul class="mt-3 space-y-2 text-sm">
+              <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[var(--brand-2)] flex items-center justify-center text-[var(--accent)]">✓</span> Ver histórias e curtir</li>
+              <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[var(--brand-2)] flex items-center justify-center text-[var(--accent)]">✓</span> 1 chat aberto</li>
+              <li class="flex items-center gap-2 text-slate-500"><span class="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">–</span> Acompanhamento de metas avançado</li>
+            </ul>
+            <button class="mt-4 w-full px-4 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 transition">Ficar no Gratuito</button>
+          </div>
+
+          <!-- Plano Premium -->
+          <div class="rounded-2xl border-2 border-emerald-300 bg-gradient-to-br from-white to-[var(--brand-2)] shadow p-5 relative">
+            <span class="absolute -top-3 right-4 px-2 py-1 rounded-full text-xs bg-emerald-500 text-white shadow">Recomendado</span>
+            <p class="text-sm font-semibold text-emerald-700">Premium</p>
+            <h3 class="text-2xl font-extrabold mt-1">R$ 3,90<span class="text-base font-semibold text-slate-500"> /semana</span></h3>
+            <ul class="mt-3 space-y-2 text-sm">
+              <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[var(--brand-2)] flex items-center justify-center text-[var(--accent)]">✓</span> Chats ilimitados</li>
+              <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[var(--brand-2)] flex items-center justify-center text-[var(--accent)]">✓</span> Metas e selos extras</li>
+              <li class="flex items-center gap-2"><span class="w-5 h-5 rounded-full bg-[var(--brand-2)] flex items-center justify-center text-[var(--accent)]">✓</span> Comunidade exclusiva</li>
+            </ul>
+            <button id="btnAssinar" class="mt-4 w-full px-4 py-3 rounded-xl bg-[var(--accent)] text-white hover:brightness-110 transition">Assinar Premium</button>
+            <p class="mt-2 text-xs text-slate-500">Pagamento não é realizado neste demo.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- RODAPÉ / CONFIANÇA -->
+      <footer class="py-10">
+        <div class="rounded-2xl bg-white/70 backdrop-blur border border-slate-100 p-6">
+          <p class="font-bold">Cuidando de você com responsabilidade</p>
+          <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="flex items-center gap-2">
+              <svg class="w-6 h-6 text-emerald-500" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4-7-11a7 7 0 1 1 14 0c0 7-7 11-7 11Z" stroke="currentColor" stroke-width="2"/></svg>
+              <span>Psicólogos parceiros</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-6 h-6 text-blue-500" viewBox="0 0 24 24" fill="none"><path d="M12 6v12M6 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <span>Nutricionistas de apoio</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-6 h-6 text-orange-500" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M7 7v10a5 5 0 0 0 10 0V7" stroke="currentColor" stroke-width="2"/></svg>
+              <span>ONGs de saúde</span>
+            </div>
+          </div>
+          <div class="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-sm text-slate-600">
+            <div class="flex gap-4">
+              <a href="#" class="hover:underline">Contato</a>
+              <a href="#" class="hover:underline">Política de Privacidade</a>
+              <a href="#" class="hover:underline">Termos</a>
+            </div>
+            <p class="text-xs">© Já Fui — Demo. Sem coleta de dados pessoais.</p>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <!-- Navegação inferior (mobile) -->
+    <nav class="fixed bottom-0 left-0 right-0 sm:hidden z-40">
+      <div class="mx-4 mb-4 rounded-2xl bg-white shadow-lg border border-slate-100 overflow-hidden">
+        <div class="grid grid-cols-5">
+          <button data-goto="landing" class="tab px-3 py-3 flex flex-col items-center gap-1 text-slate-500">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M3 12 12 3l9 9v7a2 2 0 0 1-2 2h-4v-6H9v6H5a2 2 0 0 1-2-2v-7Z" stroke="currentColor" stroke-width="2"/></svg>
+            <span class="text-[11px]">Início</span>
+          </button>
+          <button data-goto="feed" class="tab px-3 py-3 flex flex-col items-center gap-1 text-slate-500">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="text-[11px]">Feed</span>
+          </button>
+          <button data-goto="chat" class="tab px-3 py-3 flex flex-col items-center gap-1 text-slate-500">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M21 12a8 8 0 1 1-3.6-6.7L21 5l-.9 3.6A7.9 7.9 0 0 1 21 12Z" stroke="currentColor" stroke-width="2"/></svg>
+            <span class="text-[11px]">Chat</span>
+          </button>
+          <button data-goto="progress" class="tab px-3 py-3 flex flex-col items-center gap-1 text-slate-500">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M4 18V6m6 12V9m6 9V4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="text-[11px]">Progresso</span>
+          </button>
+          <button data-goto="plans" class="tab px-3 py-3 flex flex-col items-center gap-1 text-slate-500">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <span class="text-[11px]">Plano</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Modal de assinatura (demo) -->
+    <div id="modal" class="hidden fixed inset-0 z-50 items-center justify-center p-4">
+      <div class="absolute inset-0 bg-black/30"></div>
+      <div class="relative z-10 max-w-sm w-full rounded-2xl bg-white p-5 shadow-xl border border-slate-100">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-full bg-[var(--brand-2)] flex items-center justify-center text-[var(--accent)] font-bold">JF</div>
+          <div class="flex-1">
+            <p class="font-bold">Assinatura em modo Demo</p>
+            <p class="text-sm text-slate-600 mt-1">Aqui você veria a confirmação segura do pagamento. No demo, é só uma simulação para mostrar o fluxo.</p>
+          </div>
+        </div>
+        <div class="mt-4 flex gap-2">
+          <button id="btnFecharModal" class="flex-1 px-4 py-3 rounded-xl bg-slate-100 hover:bg-slate-200">Fechar</button>
+          <button id="btnOkModal" class="flex-1 px-4 py-3 rounded-xl bg-[var(--accent)] text-white hover:brightness-110">Entendi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Estado simples de navegação
+    const views = {
+      landing: document.getElementById('view-landing'),
+      feed: document.getElementById('view-feed'),
+      chat: document.getElementById('view-chat'),
+      progress: document.getElementById('view-progress'),
+      plans: document.getElementById('view-plans'),
+    };
+    let current = 'landing';
+    function show(view){
+      Object.values(views).forEach(v => v.classList.add('hidden'));
+      views[view].classList.remove('hidden');
+      current = view;
+      // Marca aba ativa (mobile)
+      document.querySelectorAll('nav .tab').forEach(btn=>{
+        const isActive = btn.dataset.goto===view;
+        btn.classList.toggle('text-emerald-600', isActive);
+      });
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+    document.querySelectorAll('[data-goto]').forEach(b=> b.addEventListener('click', ()=> show(b.dataset.goto)));
+    document.getElementById('btnEntrarDemo').addEventListener('click', ()=> show('feed'));
+    document.getElementById('btnCriarDemo').addEventListener('click', ()=> show('feed'));
+
+    // Carrossel automático
+    const track = document.getElementById('carouselTrack');
+    const dots = document.querySelectorAll('.dot');
+    let slide = 0;
+    function goSlide(i){
+      slide = i;
+      track.style.transform = `translateX(-${i*100}%)`;
+      dots.forEach((d,idx)=>{
+        d.classList.toggle('bg-emerald-400', idx===i);
+        d.classList.toggle('bg-slate-300', idx!==i);
+      });
+    }
+    setInterval(()=> goSlide((slide+1)%3), 4000);
+
+    // Feed: curtidas e comentários (demo)
+    document.querySelectorAll('.btn-like').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const span = btn.querySelector('.like-count');
+        const liked = btn.classList.toggle('ring-2');
+        const val = parseInt(span.textContent,10) + (liked?1:-1);
+        span.textContent = Math.max(val,0);
+        btn.classList.toggle('bg-emerald-100', liked);
+      });
+    });
+    document.querySelectorAll('.btn-comment').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const card = btn.closest('article');
+        const box = card.querySelector('.comment-box');
+        box.classList.toggle('hidden');
+      });
+    });
+    document.querySelectorAll('.btn-send-comment').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const card = btn.closest('article');
+        const input = card.querySelector('input[type="text"]');
+        const list = card.querySelector('ul');
+        const text = input.value.trim();
+        if(!text) return;
+        const li = document.createElement('li');
+        li.className = 'fade-in';
+        li.innerHTML = `<div class="flex items-start gap-2">
+          <div class="w-6 h-6 rounded-full bg-[var(--brand-1)] flex items-center justify-center text-[10px] text-[var(--accent-2)] font-bold">EU</div>
+          <div class="px-3 py-2 bg-white border border-slate-200 rounded-xl shadow-sm">${escapeHtml(text)}</div>
+        </div>`;
+        list.appendChild(li);
+        input.value = '';
+      });
+    });
+
+    // Chat: quick chips e envio
+    const chatArea = document.getElementById('chatArea');
+    const chatInput = document.getElementById('chatInput');
+    document.getElementById('btnSendChat').addEventListener('click', sendChat);
+    document.querySelectorAll('.chip').forEach(c=>{
+      c.addEventListener('click', ()=>{
+        chatInput.value = c.textContent.trim();
+        sendChat();
+      })
+    });
+    function sendChat(){
+      const msg = chatInput.value.trim();
+      if(!msg) return;
+      addBubble('me', msg);
+      chatInput.value='';
+      // resposta acolhedora simulada
+      setTimeout(()=>{
+        addBubble('them', 'Obrigada por compartilhar 💚 Vamos montar uma mini meta de hoje? Algo bem simples, pode ser 5 min de caminhada.');
+      }, 800);
+    }
+    function addBubble(side, text){
+      const row = document.createElement('div');
+      row.className = `flex items-start gap-2 ${side==='me'?'justify-end':''} fade-in`;
+      if(side==='them'){
+        row.innerHTML = `
+          <div class="w-7 h-7 rounded-full bg-[var(--brand-2)] flex items-center justify-center text-[var(--accent)] text-xs font-bold">CA</div>
+          <div class="bg-white border border-slate-100 rounded-2xl px-4 py-2 shadow-sm max-w-[75%]"><p class="text-sm">${escapeHtml(text)}</p></div>
+        `;
+      } else {
+        row.innerHTML = `
+          <div class="bg-[var(--brand-1)] text-slate-800 rounded-2xl px-4 py-2 shadow-sm max-w-[75%]"><p class="text-sm">${escapeHtml(text)}</p></div>
+          <div class="w-7 h-7 rounded-full bg-[var(--brand-1)] flex items-center justify-center text-[var(--accent-2)] text-xs font-bold">EU</div>
+        `;
+      }
+      chatArea.appendChild(row);
+      chatArea.scrollTo({top: chatArea.scrollHeight, behavior:'smooth'});
+    }
+
+    // Progresso: barra + metas
+    let progress = 60;
+    function renderProgress(){
+      document.getElementById('progressBar').style.width = `${progress}%`;
+      document.getElementById('progressPct').textContent = `${progress}%`;
+    }
+    document.querySelectorAll('[data-prog]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        progress = Math.max(0, Math.min(100, progress + (b.dataset.prog==='+10'?10:-10)));
+        renderProgress();
+      });
+    });
+    renderProgress();
+
+    const goals = [
+      {id:1, text:'Beber 2 copos de água ao acordar', done:false},
+      {id:2, text:'Caminhar 5 minutos', done:true}
+    ];
+    const goalsList = document.getElementById('goalsList');
+    function paintGoals(){
+      goalsList.innerHTML='';
+      goals.forEach(g=>{
+        const item = document.createElement('div');
+        item.className = 'flex items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2';
+        item.innerHTML = `
+          <div class="flex items-center gap-2">
+            <button aria-label="Concluir" class="toggle w-6 h-6 rounded-full ${g.done?'bg-emerald-500 text-white':'bg-slate-100 text-slate-400'} flex items-center justify-center">${g.done?'✓':''}</button>
+            <span class="${g.done?'line-through text-slate-500':''}">${escapeHtml(g.text)}</span>
+          </div>
+          <button aria-label="Excluir" class="del text-slate-400 hover:text-red-500">✕</button>
+        `;
+        item.querySelector('.toggle').addEventListener('click', ()=>{
+          g.done = !g.done; paintGoals();
+        });
+        item.querySelector('.del').addEventListener('click', ()=>{
+          const idx = goals.findIndex(x=>x.id===g.id);
+          if(idx>-1) goals.splice(idx,1);
+          paintGoals();
+        });
+        goalsList.appendChild(item);
+      });
+    }
+    paintGoals();
+    document.getElementById('btnAddGoal').addEventListener('click', ()=>{
+      const input = document.getElementById('goalInput');
+      const t = input.value.trim();
+      if(!t) return;
+      goals.push({id:Date.now(), text:t, done:false});
+      input.value=''; paintGoals();
+    });
+
+    // Plano: modal demo
+    const modal = document.getElementById('modal');
+    document.getElementById('btnAssinar').addEventListener('click', ()=> {
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    });
+    document.getElementById('btnFecharModal').addEventListener('click', closeModal);
+    document.getElementById('btnOkModal').addEventListener('click', closeModal);
+    function closeModal(){
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    // Compartilhar história (simples)
+    document.getElementById('btnNovaHistoria').addEventListener('click', ()=>{
+      const text = prompt('Qual mensagem de apoio você quer compartilhar? (Demo)');
+      if(!text) return;
+      const feed = document.getElementById('feedList');
+      const card = document.createElement('article');
+      card.className = 'rounded-2xl bg-white border border-slate-100 shadow-sm overflow-hidden fade-in';
+      card.innerHTML = `
+        <div class="p-4 flex items-start gap-3">
+          <div class="w-12 h-12 rounded-full bg-[var(--brand-1)] flex items-center justify-center font-bold text-[var(--accent-2)]">EU</div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="font-semibold">Você</p>
+                <p class="text-xs text-slate-500">“Mensagem enviada agora”</p>
+              </div>
+              <span class="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded-full">Novo</span>
+            </div>
+            <p class="mt-3 text-slate-700">${escapeHtml(text)}</p>
+            <div class="mt-4 flex items-center gap-3">
+              <button class="btn-like px-3 py-1.5 rounded-full bg-[var(--brand-2)] text-[var(--accent)] hover:bg-emerald-50 transition" data-id="${Date.now()}">Curtir <span class="like-count">0</span></button>
+              <button class="btn-comment px-3 py-1.5 rounded-full bg-[var(--brand-1)] text-[var(--accent-2)] hover:bg-blue-50 transition">Comentar</button>
+            </div>
+            <div class="comment-box hidden mt-3">
+              <div class="flex gap-2">
+                <input type="text" placeholder="Deixe uma mensagem de apoio..." class="flex-1 px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-200">
+                <button class="btn-send-comment px-3 py-2 rounded-xl bg-[var(--accent)] text-white hover:brightness-110 transition">Enviar</button>
+              </div>
+              <ul class="mt-2 space-y-2 text-sm"></ul>
+            </div>
+          </div>
+        </div>
+      `;
+      feed.prepend(card);
+      // ligar botões do novo card
+      card.querySelector('.btn-like').addEventListener('click', (e)=>{
+        const span = e.currentTarget.querySelector('.like-count');
+        const liked = e.currentTarget.classList.toggle('ring-2');
+        const val = parseInt(span.textContent,10) + (liked?1:-1);
+        span.textContent = Math.max(val,0);
+        e.currentTarget.classList.toggle('bg-emerald-100', liked);
+      });
+      const toggleC = card.querySelector('.btn-comment');
+      toggleC.addEventListener('click', ()=>{
+        const box = card.querySelector('.comment-box');
+        box.classList.toggle('hidden');
+      });
+      const sendC = card.querySelector('.btn-send-comment');
+      sendC.addEventListener('click', ()=>{
+        const input = card.querySelector('input[type="text"]');
+        const list = card.querySelector('ul');
+        const t = input.value.trim();
+        if(!t) return;
+        const li = document.createElement('li');
+        li.className = 'fade-in';
+        li.innerHTML = `<div class="flex items-start gap-2">
+          <div class="w-6 h-6 rounded-full bg-[var(--brand-1)] flex items-center justify-center text-[10px] text-[var(--accent-2)] font-bold">EU</div>
+          <div class="px-3 py-2 bg-white border border-slate-200 rounded-xl shadow-sm">${escapeHtml(t)}</div>
+        </div>`;
+        list.appendChild(li);
+        input.value = '';
+      });
+    });
+
+    // Util
+    function escapeHtml(s){
+      return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+    }
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9725e480d3b3aec9',t:'MTc1NTczNDg3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
